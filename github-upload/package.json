@@ -1,0 +1,35 @@
+{
+  "name": "car-scout-toyota",
+  "version": "2.0.0",
+  "description": "Car Scout - 智能二手车抓取与全流程管理系统",
+  "main": "src/dashboard.js",
+  "scripts": {
+    "start": "node src/web-server.js",
+    "scout": "node src/dashboard.js",
+    "scrape": "node src/facebook-scraper-v4.js",
+    "scrape:old": "node src/facebook-private-scraper.js",
+    "report": "node src/dashboard.js report",
+    "dashboard": "node src/dashboard.js dashboard",
+    "todos": "node src/dashboard.js todos",
+    "list": "node src/dashboard.js list",
+    "setup": "node src/dashboard.js setup",
+    "feishu": "node src/dashboard.js feishu",
+    "full": "npm run scrape && npm run report",
+    "deploy": "node auto-deploy.js",
+    "deploy:simple": "node deploy-simple.js"
+  },
+  "dependencies": {
+    "playwright": "^1.58.2",
+    "dotenv": "^16.3.1"
+  },
+  "keywords": [
+    "facebook",
+    "marketplace",
+    "toyota",
+    "scraping",
+    "workflow",
+    "management"
+  ],
+  "author": "Car Scout",
+  "license": "MIT"
+}

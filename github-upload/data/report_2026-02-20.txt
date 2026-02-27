@@ -1,0 +1,39 @@
+📅 Car Scout 报告 | 21/02/2026 04:55 am
+🚗 本次抓取: 10辆车
+✅ 可投资: 6辆
+
+🏆 TOP 3推荐:
+
+1️⃣ 2010 Toyota Corolla 2010 | $4,500 | 145,000km | 评分:85 ✅可投资
+   📍 Auckland | WOF: Aug 2025
+   💰 建议采购价: $4,050 | 预计利润: $675-$1125
+   🔗 https://www.facebook.com/marketplace/item/1234567890/
+
+2️⃣ 2003 Toyota Corolla 2003 | $2,500 | 245,000km | 评分:84 ✅可投资
+   📍 Auckland | WOF: Apr 2025
+   💰 建议采购价: $2,250 | 预计利润: $375-$625
+   🔗 https://www.facebook.com/marketplace/item/1234567897/
+
+3️⃣ 2013 Toyota Corolla 2013 | $4,900 | 155,000km | 评分:79 ✅可投资
+   📍 Auckland | WOF: Dec 2025
+   💰 建议采购价: $4,410 | 预计利润: $735-$1225
+   🔗 https://www.facebook.com/marketplace/item/1234567894/
+
+📋 全部车辆概览:
+1. 2010 Toyota Corolla 2010 | $4,500 | 评分:85 ✅
+2. 2003 Toyota Corolla 2003 | $2,500 | 评分:84 ✅
+3. 2013 Toyota Corolla 2013 | $4,900 | 评分:79 ✅
+4. 2008 Toyota Vitz 2008 | $3,800 | 评分:76 ✅
+5. 2005 Toyota Corolla 2005 | $3,200 | 评分:75 ✅
+6. 2007 Toyota Corolla 2007 Fielder Wagon | $4,100 | 评分:75 ✅
+7. 2011 Toyota Vitz 2011 | $4,200 | 评分:74
+8. 2012 Toyota Vitz 2012 | $4,700 | 评分:72
+9. 2006 Toyota RAV4 2006 | $4,500 | 评分:66
+10. 2008 Toyota RAV4 2008 4WD | $4,800 | 评分:60
+
+⚠️ 注意: 
+- 所有评分仅供参考，实地看车前请与卖家确认车况
+- 建议采购价为要价的90%，实际成交价需根据车况协商
+- WOF和Rego信息以实际车辆为准
+- 数据来源: Facebook Marketplace Auckland & Waikato
+- 本次报告基于 2026-02-18 数据

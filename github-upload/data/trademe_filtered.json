@@ -1,0 +1,90 @@
+{
+  "date": "2026-02-24",
+  "filters": {
+    "location": "Auckland + surrounding",
+    "transmission": "Automatic only",
+    "maxMileage": 160000,
+    "priceRange": "2000-5000"
+  },
+  "total": 6,
+  "vehicles": [
+    {
+      "title": "2004 toyota vitz",
+      "url": "https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5800636574?rsqid=6f11a7cebedb40a3b645b6dab6149135-001",
+      "price": 3900,
+      "year": 2004,
+      "mileage": 118000,
+      "location": "Toyota Vitz\nNorth Shore, Auckland",
+      "transmission": "Automatic",
+      "brand": "toyota",
+      "model": "vitz",
+      "sellerType": "private",
+      "source": "TradeMe"
+    },
+    {
+      "title": "2005 toyota vitz",
+      "url": "https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5798245031?rsqid=6f11a7cebedb40a3b645b6dab6149135-001",
+      "price": 4000,
+      "year": 2005,
+      "mileage": 151268,
+      "location": "Toyota Vitz\nFranklin, Auckland",
+      "transmission": "Automatic",
+      "brand": "toyota",
+      "model": "vitz",
+      "sellerType": "private",
+      "source": "TradeMe"
+    },
+    {
+      "title": "2016 mazda cx-5",
+      "url": "https://trademe.co.nz/a/motors/cars/mazda/cx-5/listing/5799667130?rsqid=0cb9bf3c694444cb8285dbe4b2434cc8-001",
+      "price": 4000,
+      "year": 2016,
+      "mileage": 151754,
+      "location": "Auckland City, Auckland",
+      "transmission": "Automatic",
+      "brand": "mazda",
+      "model": "cx-5",
+      "sellerType": "private",
+      "source": "TradeMe"
+    },
+    {
+      "title": "2004 toyota corolla",
+      "url": "https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5761791980?rsqid=8517754a95244e5094681a1284d43b05-001",
+      "price": 4500,
+      "year": 2004,
+      "mileage": 120578,
+      "location": "Toyota Vitz\nAuckland City, Auckland",
+      "transmission": "Automatic",
+      "brand": "toyota",
+      "model": "corolla",
+      "sellerType": "private",
+      "source": "TradeMe"
+    },
+    {
+      "title": "2004 toyota vitz",
+      "url": "https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5761791980?rsqid=6f11a7cebedb40a3b645b6dab6149135-001",
+      "price": 4500,
+      "year": 2004,
+      "mileage": 120578,
+      "location": "Toyota Vitz\nAuckland City, Auckland",
+      "transmission": "Automatic",
+      "brand": "toyota",
+      "model": "vitz",
+      "sellerType": "private",
+      "source": "TradeMe"
+    },
+    {
+      "title": "2015 mazda cx-5",
+      "url": "https://trademe.co.nz/a/motors/cars/mazda/cx-5/listing/5784934193?rsqid=0cb9bf3c694444cb8285dbe4b2434cc8-001",
+      "price": 4500,
+      "year": 2015,
+      "mileage": 125510,
+      "location": "North Shore, Auckland",
+      "transmission": "Automatic",
+      "brand": "mazda",
+      "model": "cx-5",
+      "sellerType": "private",
+      "source": "TradeMe"
+    }
+  ]
+}

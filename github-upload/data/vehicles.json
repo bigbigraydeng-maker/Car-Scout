@@ -1,0 +1,335 @@
+{
+  "lastUpdate": "2026-02-26T23:30:03.518Z",
+  "vehicles": [
+    {
+      "id": "v001",
+      "title": "2016 mazda cx-5",
+      "url": "https://trademe.co.nz/a/motors/cars/mazda/cx-5/listing/5799667130?rsqid=0cb9bf3c694444cb8285dbe4b2434cc8-001",
+      "price": 4000,
+      "year": 2016,
+      "mileage": 151754,
+      "location": "Auckland City, Auckland",
+      "transmission": "Automatic",
+      "brand": "mazda",
+      "model": "cx-5",
+      "sellerType": "private",
+      "source": "TradeMe",
+      "condition": "average",
+      "listingDays": 3,
+      "profitAnalysis": {
+        "error": "未找到该车型的市场参考数据",
+        "fallback": {
+          "note": "使用通用计算方法（无该车型市场数据）",
+          "scenarios": {
+            "conservative": {
+              "salePrice": 5003,
+              "profit": 653,
+              "margin": "15.0",
+              "timeframe": "2-4周"
+            },
+            "optimistic": {
+              "salePrice": 5438,
+              "profit": 1088,
+              "margin": "25.0",
+              "timeframe": "4-6周"
+            }
+          }
+        }
+      },
+      "status": "new",
+      "createdAt": "2026-02-26T23:30:03.515Z",
+      "updatedAt": "2026-02-26T23:30:03.518Z"
+    },
+    {
+      "id": "v002",
+      "title": "2015 mazda cx-5",
+      "url": "https://trademe.co.nz/a/motors/cars/mazda/cx-5/listing/5784934193?rsqid=0cb9bf3c694444cb8285dbe4b2434cc8-001",
+      "price": 4500,
+      "year": 2015,
+      "mileage": 125510,
+      "location": "North Shore, Auckland",
+      "transmission": "Automatic",
+      "brand": "mazda",
+      "model": "cx-5",
+      "sellerType": "private",
+      "source": "TradeMe",
+      "condition": "average",
+      "listingDays": 3,
+      "profitAnalysis": {
+        "error": "未找到该车型的市场参考数据",
+        "fallback": {
+          "note": "使用通用计算方法（无该车型市场数据）",
+          "scenarios": {
+            "conservative": {
+              "salePrice": 5405,
+              "profit": 705,
+              "margin": "15.0",
+              "timeframe": "2-4周"
+            },
+            "optimistic": {
+              "salePrice": 5875,
+              "profit": 1175,
+              "margin": "25.0",
+              "timeframe": "4-6周"
+            }
+          }
+        }
+      },
+      "status": "new",
+      "createdAt": "2026-02-26T23:30:03.518Z",
+      "updatedAt": "2026-02-26T23:30:03.518Z"
+    },
+    {
+      "id": "v003",
+      "title": "2005 toyota vitz",
+      "url": "https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5798245031?rsqid=6f11a7cebedb40a3b645b6dab6149135-001",
+      "price": 4000,
+      "year": 2005,
+      "mileage": 151268,
+      "location": "Toyota Vitz\nFranklin, Auckland",
+      "transmission": "Automatic",
+      "brand": "toyota",
+      "model": "vitz",
+      "sellerType": "private",
+      "source": "TradeMe",
+      "condition": "average",
+      "listingDays": 3,
+      "profitAnalysis": {
+        "marketReference": {
+          "min": 4500,
+          "max": 6500,
+          "avg": 5500
+        },
+        "adjustments": {
+          "mileage": "-10%",
+          "condition": "0%"
+        },
+        "acquisition": {
+          "askingPrice": 4000,
+          "suggestedOffer": 3800,
+          "negotiationRoom": "5%",
+          "refurbishmentCost": 750,
+          "totalInvestment": 4750
+        },
+        "scenarios": {
+          "conservative": {
+            "salePrice": 3848,
+            "profit": -902,
+            "margin": "-19.0",
+            "timeframe": "1-2周",
+            "strategy": "快速出清，吸引买家"
+          },
+          "recommended": {
+            "salePrice": 4950,
+            "profit": 200,
+            "margin": "4.2",
+            "timeframe": "2-4周",
+            "strategy": "平衡价格和出售速度"
+          },
+          "optimistic": {
+            "salePrice": 5733,
+            "profit": 983,
+            "margin": "20.7",
+            "timeframe": "4-8周",
+            "strategy": "等待理想买家，需有耐心"
+          }
+        },
+        "riskLevel": "medium",
+        "recommendation": "❌ 不推荐 - 利润空间不足10%",
+        "marketDataSource": "TradeMe/Facebook 历史数据"
+      },
+      "status": "new",
+      "createdAt": "2026-02-26T23:30:03.518Z",
+      "updatedAt": "2026-02-26T23:30:03.518Z"
+    },
+    {
+      "id": "v004",
+      "title": "2004 toyota vitz",
+      "url": "https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5800636574?rsqid=6f11a7cebedb40a3b645b6dab6149135-001",
+      "price": 3900,
+      "year": 2004,
+      "mileage": 118000,
+      "location": "Toyota Vitz\nNorth Shore, Auckland",
+      "transmission": "Automatic",
+      "brand": "toyota",
+      "model": "vitz",
+      "sellerType": "private",
+      "source": "TradeMe",
+      "condition": "fair",
+      "listingDays": 3,
+      "profitAnalysis": {
+        "marketReference": {
+          "min": 4500,
+          "max": 6500,
+          "avg": 5500
+        },
+        "adjustments": {
+          "mileage": "0%",
+          "condition": "-8%"
+        },
+        "acquisition": {
+          "askingPrice": 3900,
+          "suggestedOffer": 3705,
+          "negotiationRoom": "5%",
+          "refurbishmentCost": 900,
+          "totalInvestment": 4800
+        },
+        "scenarios": {
+          "conservative": {
+            "salePrice": 3933,
+            "profit": -867,
+            "margin": "-18.1",
+            "timeframe": "1-2周",
+            "strategy": "快速出清，吸引买家"
+          },
+          "recommended": {
+            "salePrice": 5060,
+            "profit": 260,
+            "margin": "5.4",
+            "timeframe": "2-4周",
+            "strategy": "平衡价格和出售速度"
+          },
+          "optimistic": {
+            "salePrice": 5860,
+            "profit": 1060,
+            "margin": "22.1",
+            "timeframe": "4-8周",
+            "strategy": "等待理想买家，需有耐心"
+          }
+        },
+        "riskLevel": "medium",
+        "recommendation": "❌ 不推荐 - 利润空间不足10%",
+        "marketDataSource": "TradeMe/Facebook 历史数据"
+      },
+      "status": "new",
+      "createdAt": "2026-02-26T23:30:03.518Z",
+      "updatedAt": "2026-02-26T23:30:03.518Z"
+    },
+    {
+      "id": "v005",
+      "title": "2004 toyota corolla",
+      "url": "https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5761791980?rsqid=8517754a95244e5094681a1284d43b05-001",
+      "price": 4500,
+      "year": 2004,
+      "mileage": 120578,
+      "location": "Toyota Vitz\nAuckland City, Auckland",
+      "transmission": "Automatic",
+      "brand": "toyota",
+      "model": "corolla",
+      "sellerType": "private",
+      "source": "TradeMe",
+      "condition": "fair",
+      "listingDays": 3,
+      "profitAnalysis": {
+        "marketReference": {
+          "min": 4500,
+          "max": 6500,
+          "avg": 5500
+        },
+        "adjustments": {
+          "mileage": "-5%",
+          "condition": "-8%"
+        },
+        "acquisition": {
+          "askingPrice": 4500,
+          "suggestedOffer": 4275,
+          "negotiationRoom": "5%",
+          "refurbishmentCost": 900,
+          "totalInvestment": 5400
+        },
+        "scenarios": {
+          "conservative": {
+            "salePrice": 3736,
+            "profit": -1664,
+            "margin": "-30.8",
+            "timeframe": "1-2周",
+            "strategy": "快速出清，吸引买家"
+          },
+          "recommended": {
+            "salePrice": 4807,
+            "profit": -593,
+            "margin": "-11.0",
+            "timeframe": "2-4周",
+            "strategy": "平衡价格和出售速度"
+          },
+          "optimistic": {
+            "salePrice": 5567,
+            "profit": 167,
+            "margin": "3.1",
+            "timeframe": "4-8周",
+            "strategy": "等待理想买家，需有耐心"
+          }
+        },
+        "riskLevel": "medium",
+        "recommendation": "❌ 不推荐 - 利润空间不足10%",
+        "marketDataSource": "TradeMe/Facebook 历史数据"
+      },
+      "status": "new",
+      "createdAt": "2026-02-26T23:30:03.518Z",
+      "updatedAt": "2026-02-26T23:30:03.518Z"
+    },
+    {
+      "id": "v006",
+      "title": "2004 toyota vitz",
+      "url": "https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5761791980?rsqid=6f11a7cebedb40a3b645b6dab6149135-001",
+      "price": 4500,
+      "year": 2004,
+      "mileage": 120578,
+      "location": "Toyota Vitz\nAuckland City, Auckland",
+      "transmission": "Automatic",
+      "brand": "toyota",
+      "model": "vitz",
+      "sellerType": "private",
+      "source": "TradeMe",
+      "condition": "fair",
+      "listingDays": 3,
+      "profitAnalysis": {
+        "marketReference": {
+          "min": 4500,
+          "max": 6500,
+          "avg": 5500
+        },
+        "adjustments": {
+          "mileage": "-5%",
+          "condition": "-8%"
+        },
+        "acquisition": {
+          "askingPrice": 4500,
+          "suggestedOffer": 4275,
+          "negotiationRoom": "5%",
+          "refurbishmentCost": 900,
+          "totalInvestment": 5400
+        },
+        "scenarios": {
+          "conservative": {
+            "salePrice": 3736,
+            "profit": -1664,
+            "margin": "-30.8",
+            "timeframe": "1-2周",
+            "strategy": "快速出清，吸引买家"
+          },
+          "recommended": {
+            "salePrice": 4807,
+            "profit": -593,
+            "margin": "-11.0",
+            "timeframe": "2-4周",
+            "strategy": "平衡价格和出售速度"
+          },
+          "optimistic": {
+            "salePrice": 5567,
+            "profit": 167,
+            "margin": "3.1",
+            "timeframe": "4-8周",
+            "strategy": "等待理想买家，需有耐心"
+          }
+        },
+        "riskLevel": "medium",
+        "recommendation": "❌ 不推荐 - 利润空间不足10%",
+        "marketDataSource": "TradeMe/Facebook 历史数据"
+      },
+      "status": "new",
+      "createdAt": "2026-02-26T23:30:03.518Z",
+      "updatedAt": "2026-02-26T23:30:03.518Z"
+    }
+  ]
+}
