@@ -206,6 +206,18 @@ class VisualReportGenerator {
         .status-cleaning { background: #e6fffb; color: #13c2c2; }
         .status-reselling { background: #f0f5ff; color: #2f54eb; }
         
+        .source-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .source-trademe { background: #fff2e8; color: #fa541c; border: 1px solid #ffbb96; }
+        .source-facebook { background: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
+        .source-unknown { background: #f5f5f5; color: #999; border: 1px solid #d9d9d9; }
+        
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -418,6 +430,7 @@ class VisualReportGenerator {
             
             <div style="margin: 10px 0;">
                 <span class="status-badge ${statusClass}">${this.getStatusLabel(vehicle.status)}</span>
+                ${vehicle.source ? `<span class="source-badge source-${vehicle.source}">${this.getSourceLabel(vehicle.source)}</span>` : ''}
                 ${vehicle.location ? `<span style="color: #666; margin-left: 10px;">📍 ${vehicle.location}</span>` : ''}
             </div>
             
@@ -443,6 +456,15 @@ class VisualReportGenerator {
       'abandoned': '❌ 已放弃'
     };
     return labels[status] || status;
+  }
+
+  getSourceLabel(source) {
+    const labels = {
+      'trademe': '🏪 TradeMe',
+      'facebook': '📘 Facebook',
+      'unknown': '❓ 未知'
+    };
+    return labels[source] || labels['unknown'];
   }
 }
 
