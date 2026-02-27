@@ -36,16 +36,6 @@
           "lat": -37.787,
           "lng": 175.2793
         }
-      },
-      "brisbane": {
-        "city": "Brisbane",
-        "code": "brisbane",
-        "country": "Australia",
-        "radius_km": 50,
-        "coordinates": {
-          "lat": -27.4698,
-          "lng": 153.0251
-        }
       }
     },
     "price_range": {

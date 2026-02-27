@@ -132,6 +132,20 @@ class VisualReportGenerator {
         .vehicle-card.priority-medium { border-left: 5px solid #faad14; }
         .vehicle-card.priority-low { border-left: 5px solid #52c41a; }
         
+        .vehicle-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            background: #f5f5f5;
+        }
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
         .vehicle-header {
             display: flex;
             justify-content: space-between;
@@ -374,8 +388,14 @@ class VisualReportGenerator {
     
     const statusClass = `status-${vehicle.status}`;
     
+    // 生成图片HTML（如果有图片URL）
+    const imageHtml = vehicle.imageUrl ? 
+      `<div class="vehicle-image"><img src="${vehicle.imageUrl}" alt="${vehicle.title}" onerror="this.style.display='none'"></div>` : 
+      `<div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>`;
+    
     return `
         <div class="vehicle-card ${priorityClass}">
+            ${imageHtml}
             <div class="vehicle-header">
                 <div class="vehicle-title">${vehicle.title}</div>
                 <div class="vehicle-year">${vehicle.year}</div>
