@@ -1,0 +1,11 @@
+🔍 获取GitHub用户信息...
+✅ GitHub用户名：bigbigraydeng-maker
+
+📦 步骤1：创建GitHub仓库...
+
+❌ 部署失败：创建GitHub仓库失败：Resource not accessible by personal access token
+
+请检查：
+1. API Token是否正确
+2. 网络连接是否正常
+3. 查看 deploy-log.txt 获取详细日志

@@ -1,0 +1,98 @@
+{
+  "config": {
+    "wide_screen_mode": true
+  },
+  "header": {
+    "title": {
+      "tag": "plain_text",
+      "content": "🚗 Car Scout 日报 - 2026-02-27"
+    },
+    "template": "blue"
+  },
+  "elements": [
+    {
+      "tag": "div",
+      "text": {
+        "tag": "lark_md",
+        "content": "**📊 数据概览**  \n• 总车辆：117 辆  \n• 符合标准(≤160k km)：24 辆  \n• 数据来源：TradeMe  \n• 更新日期：2026-02-24"
+      }
+    },
+    {
+      "tag": "hr"
+    },
+    {
+      "tag": "div",
+      "text": {
+        "tag": "lark_md",
+        "content": "**🏆 最值得出手**"
+      }
+    },
+    {
+      "tag": "div",
+      "text": {
+        "tag": "lark_md",
+        "content": "🥇 **2007 Toyota Corolla**  \n💰 **$2,020** | 🛣️ 152,692 km | 📍 Auckland  \n⭐ 性价比最高，价格最低"
+      }
+    },
+    {
+      "tag": "action",
+      "actions": [
+        {
+          "tag": "button",
+          "text": {
+            "tag": "plain_text",
+            "content": "🔗 查看详情"
+          },
+          "type": "primary",
+          "url": "https://trademe.co.nz/a/motors/cars/toyota/corolla/listing/5791406127"
+        }
+      ]
+    },
+    {
+      "tag": "hr"
+    },
+    {
+      "tag": "div",
+      "text": {
+        "tag": "lark_md",
+        "content": "**📋 TOP 5 推荐**"
+      }
+    },
+    {
+      "tag": "div",
+      "text": {
+        "tag": "lark_md",
+        "content": "2️⃣ 2003 Honda Accord - $3,130 (95k km) [链接](https://trademe.co.nz/a/motors/cars/honda/accord/listing/5795082144)  \n3️⃣ 2005 Honda Accord - $3,500 (340 km) [链接](https://trademe.co.nz/a/motors/cars/honda/accord/listing/5791304878)  \n4️⃣ 2004 Toyota Corolla - $3,600 (139k km) [链接](https://trademe.co.nz/a/motors/cars/toyota/corolla/listing/5797222068)  \n5️⃣ 2004 Honda Accord - $3,750 (130k km) [链接](https://trademe.co.nz/a/motors/cars/honda/accord/listing/5798407709)"
+      }
+    },
+    {
+      "tag": "hr"
+    },
+    {
+      "tag": "div",
+      "text": {
+        "tag": "lark_md",
+        "content": "**📈 市场分析**"
+      }
+    },
+    {
+      "tag": "div",
+      "text": {
+        "tag": "lark_md",
+        "content": "• 最低价：$2,020 (Corolla)  \n• 平均价：约 $3,800  \n• 上架时间：3天（可谈价）  \n• 推荐车型：Toyota Corolla / Honda Accord"
+      }
+    },
+    {
+      "tag": "hr"
+    },
+    {
+      "tag": "note",
+      "elements": [
+        {
+          "tag": "plain_text",
+          "content": "💡 建议：尽快联系卖家，上架3天的车辆有谈价空间"
+        }
+      ]
+    }
+  ]
+}
