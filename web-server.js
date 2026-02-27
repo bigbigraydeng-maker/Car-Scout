@@ -398,9 +398,8 @@ class CarScoutWebServer {
 
 // 如果直接运行
 if (require.main === module) {
-  const port = process.argv[2] || 3000;
+  const port = process.env.PORT || process.argv[2] || 3000;
+  console.log(`🚀 Starting server on port ${port}`);
   const server = new CarScoutWebServer(port);
   server.start();
 }
-
-module.exports = CarScoutWebServer;
