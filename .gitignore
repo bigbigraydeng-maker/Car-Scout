@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Database (auto-generated)
+database/vehicles.json
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Auth files (sensitive)
+auth/facebook_auth.json
+
+# Data files (auto-generated)
+data/*.json
+!data/.gitkeep
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temp files
+tmp/
+temp/
+*.tmp
