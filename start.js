@@ -1,40 +1,15 @@
 #!/usr/bin/env node
-
-// Render 智能入口 - 自动找到正确的工作目录
 const fs = require('fs');
 const path = require('path');
-
-// 尝试多个可能的路径
-const possiblePaths = [
-  './src/web-server.js',           // 从根目录运行
-  './web-server.js',               // 从src目录运行
-  '../src/web-server.js',          // 从database等目录运行
-  '/opt/render/project/src/web-server.js',  // Render绝对路径
-];
-
-let found = false;
-
-for (const tryPath of possiblePaths) {
-  try {
-    const fullPath = path.resolve(tryPath);
-    if (fs.existsSync(fullPath)) {
-      console.log(`✅ Found web-server.js at: ${fullPath}`);
-      require(fullPath);
-      found = true;
-      break;
-    }
-  } catch (e) {
-    // 继续尝试下一个
-  }
+const dbDir = path.join(__dirname, '..', 'database');
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+  console.log('✅ Created database directory');
 }
-
-if (!found) {
-  console.error('❌ Cannot find web-server.js');
-  console.error('Current directory:', process.cwd());
-  console.error('__dirname:', __dirname);
-  console.error('Files in current dir:');
-  try {
-    console.error(fs.readdirSync('.'));
-  } catch (e) {}
-  process.exit(1);
+const vehiclesFile = path.join(dbDir, 'vehicles.json');
+if (!fs.existsSync(vehiclesFile)) {
+  fs.writeFileSync(vehiclesFile, JSON.stringify({vehicles:[],lastUpdate:new Date().toISOString(),version:'1.0'}, null, 2));
+  console.log('✅ Created initial vehicles.json');
 }
+console.log('🚀 Starting Car Scout server...');
+require('./web-server.js');
