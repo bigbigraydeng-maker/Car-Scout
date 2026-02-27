@@ -41,6 +41,7 @@ trademeData.vehicles.forEach(trademeVehicle => {
   }
 
   // 转换为看板格式
+  const now = new Date().toISOString();
   const newVehicle = {
     id: `tm-${Date.now()}-${added}`,
     title: trademeVehicle.title,
@@ -52,8 +53,10 @@ trademeData.vehicles.forEach(trademeVehicle => {
     source: 'trademe',
     status: 'new',
     priority: calculatePriority(trademeVehicle),
-    dateAdded: new Date().toISOString(),
-    lastUpdated: new Date().toISOString(),
+    firstSeen: now,
+    lastSeen: now,
+    dateAdded: now,
+    lastUpdated: now,
     brand: trademeVehicle.brand,
     model: trademeVehicle.model,
     transmission: trademeVehicle.transmission
