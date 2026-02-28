@@ -2,7 +2,7 @@
 node_modules/
 
 # Database (auto-generated)
-database/vehicles.json
+# database/vehicles.json  <-- 注释掉这一行
 
 # Logs
 logs/
