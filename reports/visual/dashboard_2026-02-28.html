@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 Car Scout 车辆管理看板 | 2026-02-28</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header .date { opacity: 0.9; font-size: 1.1em; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .stat-card .number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-card .label {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px 30px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .vehicle-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .vehicle-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+        
+        .vehicle-card.priority-high { border-left: 5px solid #ff4d4f; }
+        .vehicle-card.priority-medium { border-left: 5px solid #faad14; }
+        .vehicle-card.priority-low { border-left: 5px solid #52c41a; }
+        
+        .vehicle-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            background: #f5f5f5;
+        }
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .vehicle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .vehicle-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+        }
+        
+        .vehicle-year {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .vehicle-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .vehicle-stat {
+            text-align: center;
+        }
+        .vehicle-stat .value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .vehicle-stat .label {
+            font-size: 0.85em;
+            color: #999;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        .status-new { background: #e6f7ff; color: #1890ff; }
+        .status-contacted { background: #f6ffed; color: #52c41a; }
+        .status-viewing { background: #fff7e6; color: #fa8c16; }
+        .status-inspecting { background: #fff1f0; color: #f5222d; }
+        .status-purchased { background: #f9f0ff; color: #722ed1; }
+        .status-cleaning { background: #e6fffb; color: #13c2c2; }
+        .status-reselling { background: #f0f5ff; color: #2f54eb; }
+        
+        .source-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .source-trademe { background: #fff2e8; color: #fa541c; border: 1px solid #ffbb96; }
+        .source-facebook { background: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
+        .source-unknown { background: #f5f5f5; color: #999; border: 1px solid #d9d9d9; }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5568d3; }
+        .btn-secondary { background: #f0f0f0; color: #333; }
+        .btn-secondary:hover { background: #e0e0e0; }
+        
+        .workflow-timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .timeline-step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+        .timeline-step::after {
+            content: '→';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+            font-size: 1.5em;
+        }
+        .timeline-step:last-child::after { display: none; }
+        
+        .timeline-step .icon {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        .timeline-step .count {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .timeline-step .label {
+            font-size: 0.85em;
+            color: #666;
+        }
+        
+        @media print {
+            .header { background: #667eea !important; -webkit-print-color-adjust: exact; }
+            .vehicle-card { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚗 Car Scout 车辆管理看板</h1>
+        <div class="date">2026-02-28 | 实时数据更新</div>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="number">28</div>
+            <div class="label">数据库总车辆</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">22</div>
+            <div class="label">今日新增</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">1</div>
+            <div class="label">已购买</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">2</div>
+            <div class="label">看车/车检中</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- 工作流程概览 -->
+        <div class="section">
+            <div class="section-title">📊 工作流程概览</div>
+            <div class="workflow-timeline">
+                <div class="timeline-step">
+                    <div class="icon">📥</div>
+                    <div class="count">22</div>
+                    <div class="label">新发现</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="icon">📞</div>
+                    <div class="count">0</div>
+                    <div class="label">已联系</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="icon">📅</div>
+                    <div class="count">1</div>
+                    <div class="label">预约看车</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="icon">🔍</div>
+                    <div class="count">1</div>
+                    <div class="label">车检中</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="icon">✅</div>
+                    <div class="count">1</div>
+                    <div class="label">已购买</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="icon">🧹</div>
+                    <div class="count">1</div>
+                    <div class="label">清理中</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="icon">🔄</div>
+                    <div class="count">1</div>
+                    <div class="label">已上架</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 今日新增 -->
+        
+        <div class="section">
+            <div class="section-title">🆕 今日新增车辆 (22辆)</div>
+            <div class="vehicle-grid">
+                
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2005 Toyota Corolla 1.8 GLX</div>
+                <div class="vehicle-year">2005</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$4,200</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">145k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">7</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                
+                <span style="color: #666; margin-left: 10px;">📍 Auckland City</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://facebook.com/marketplace/item/1111111111111" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('fb_1111111111111', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-medium">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2007 Toyota corolla</div>
+                <div class="vehicle-year">2007</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$4,600</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">0k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">5</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://www.facebook.com/marketplace/item/896721363253277/" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('fb_896721363253277', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2008 toyota corolla</div>
+                <div class="vehicle-year">2008</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$5,000</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">160k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">7</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 Toyota Corolla Gx
+Queenstown, Otago</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/toyota/corolla/listing/5803771878?rsqid=eb6a533cc3244a69bd89d38978b558fa-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-4', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2004 toyota corolla</div>
+                <div class="vehicle-year">2004</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$3,600</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">139k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">8</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 Toyota Corolla Gl
+Lower Hutt City, Wellington</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/toyota/corolla/listing/5797222068?rsqid=eb6a533cc3244a69bd89d38978b558fa-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-10', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2007 toyota corolla</div>
+                <div class="vehicle-year">2007</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$2,530</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">153k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">8</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/toyota/corolla/listing/5791406127?rsqid=eb6a533cc3244a69bd89d38978b558fa-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-14', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2009 toyota vitz</div>
+                <div class="vehicle-year">2009</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$4,800</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">148k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">8</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 Auckland City, Auckland</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5804930578?rsqid=ac59c88ece9a4de09857eff22eb1739b-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-18', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2004 toyota vitz</div>
+                <div class="vehicle-year">2004</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$3,800</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">0k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">9</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5801792167?rsqid=ac59c88ece9a4de09857eff22eb1739b-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-19', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2004 toyota vitz</div>
+                <div class="vehicle-year">2004</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$3,900</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">118k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">8</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 Toyota Vitz
+North Shore, Auckland</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5800636574?rsqid=ac59c88ece9a4de09857eff22eb1739b-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-20', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2005 toyota vitz</div>
+                <div class="vehicle-year">2005</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$4,000</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">151k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">8</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 Toyota Vitz
+Franklin, Auckland</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5798245031?rsqid=ac59c88ece9a4de09857eff22eb1739b-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-21', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2005 toyota vitz</div>
+                <div class="vehicle-year">2005</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$4,990</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">151k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">7</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 New Front Tyres
+Christchurch City, Canterbury</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5795199381?rsqid=ac59c88ece9a4de09857eff22eb1739b-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-26', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2005 toyota vitz</div>
+                <div class="vehicle-year">2005</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$4,990</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">118k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">8</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/toyota/vitz/listing/5775540581?rsqid=ac59c88ece9a4de09857eff22eb1739b-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-30', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2003 honda accord</div>
+                <div class="vehicle-year">2003</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$3,250</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">95k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">9</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 Honda Accord Eurol
+Wellington City, Wellington</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/honda/accord/listing/5795082144?rsqid=4f576d3d00b04438bc151cf957f294cb-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-52', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2005 honda accord</div>
+                <div class="vehicle-year">2005</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$3,500</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">0k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">10</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/honda/accord/listing/5791304878?rsqid=4f576d3d00b04438bc151cf957f294cb-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-54', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2004 honda accord</div>
+                <div class="vehicle-year">2004</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$3,750</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">131k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">8</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 Honda Accord
+Porirua, Wellington</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/honda/accord/listing/5798407709?rsqid=4f576d3d00b04438bc151cf957f294cb-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-59', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2006 honda fit</div>
+                <div class="vehicle-year">2006</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$2,860</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">121k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">9</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 Honda Fit
+Manukau, Auckland</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/honda/fit/listing/5804167283?rsqid=c0bc5c7d48a94a17b304103c700e59c6-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-65', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2008 honda fit</div>
+                <div class="vehicle-year">2008</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$5,000</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">118k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">8</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/honda/fit/listing/5794886315?rsqid=c0bc5c7d48a94a17b304103c700e59c6-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-71', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2008 honda fit</div>
+                <div class="vehicle-year">2008</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$5,000</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">149k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">8</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 Honda Fit
+Wellington City, Wellington</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/honda/fit/listing/5761318148?rsqid=c0bc5c7d48a94a17b304103c700e59c6-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-76', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2006 mazda mazda6</div>
+                <div class="vehicle-year">2006</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$3,500</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">0k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">10</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/mazda/6/listing/5780559564?rsqid=8d02c205b961485a971c0bf951d63145-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-99', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2016 mazda cx-5</div>
+                <div class="vehicle-year">2016</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$4,500</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">152k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">8</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 Auckland City, Auckland</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/mazda/cx-5/listing/5799667130?rsqid=1ac15153ab254848b900acb0a8b7ce71-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-107', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2015 mazda cx-5</div>
+                <div class="vehicle-year">2015</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$4,500</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">126k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">9</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-trademe">🏪 TradeMe</span>
+                <span style="color: #666; margin-left: 10px;">📍 North Shore, Auckland</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://trademe.co.nz/a/motors/cars/mazda/cx-5/listing/5784934193?rsqid=1ac15153ab254848b900acb0a8b7ce71-001" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('tm-1772234556627-110', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2004 TOYOTA Corolla</div>
+                <div class="vehicle-year">2004</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$3,700</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">0k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">9</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-facebook">📘 Facebook</span>
+                <span style="color: #666; margin-left: 10px;">📍 s picks
+Auckland</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://www.facebook.com/marketplace/item/2193385931192567/" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('fb_2193385931192567', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">Toyota Corolla Runx 2004</div>
+                <div class="vehicle-year">2004</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$4,500</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">0k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">9</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-new">📥 新发现</span>
+                <span class="source-badge source-facebook">📘 Facebook</span>
+                <span style="color: #666; margin-left: 10px;">📍 s picks
+Auckland</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://www.facebook.com/marketplace/item/1298964372288821/" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('fb_1298964372288821', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+            </div>
+        </div>
+    
+        
+        <!-- 待看车 -->
+        
+        <div class="section">
+            <div class="section-title">📅 待看车 (1辆)</div>
+            <div class="vehicle-grid">
+                
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2004 Toyota Vitz 1.3</div>
+                <div class="vehicle-year">2004</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$2,900</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">138k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">6</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-viewing">📅 预约看车</span>
+                
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://facebook.com/marketplace/item/3333333333333" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('fb_3333333333333', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+            </div>
+        </div>
+    
+        
+        <!-- 车检中 -->
+        
+        <div class="section">
+            <div class="section-title">🔍 车检中 (1辆)</div>
+            <div class="vehicle-grid">
+                
+        <div class="vehicle-card priority-medium">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2006 Toyota Corolla Fielder</div>
+                <div class="vehicle-year">2006</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$4,500</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">155k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">5</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-inspecting">🔍 车检中</span>
+                
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://facebook.com/marketplace/item/4444444444444" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('fb_4444444444444', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+            </div>
+        </div>
+    
+        
+        <!-- 已购买待清理 -->
+        
+        <div class="section">
+            <div class="section-title">✅ 已购买待清理 (1辆)</div>
+            <div class="vehicle-grid">
+                
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2007 Toyota Corolla GLX</div>
+                <div class="vehicle-year">2007</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$3,800</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">125k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">6</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-purchased">✅ 已购买</span>
+                
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://facebook.com/marketplace/item/6666666666666" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('fb_6666666666666', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+            </div>
+        </div>
+    
+        
+        <!-- 清理中 -->
+        
+        <div class="section">
+            <div class="section-title">🧹 清理中 (1辆)</div>
+            <div class="vehicle-grid">
+                
+        <div class="vehicle-card priority-medium">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2005 Toyota Vitz RS</div>
+                <div class="vehicle-year">2005</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$3,100</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">142k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">5</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-cleaning">🧹 清理中</span>
+                
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://facebook.com/marketplace/item/7777777777777" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('fb_7777777777777', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+            </div>
+        </div>
+    
+        
+        <!-- 已上架 -->
+        
+        <div class="section">
+            <div class="section-title">🔄 已重新上架 (1辆)</div>
+            <div class="vehicle-grid">
+                
+        <div class="vehicle-card priority-high">
+            <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">🚗 暂无图片</div>
+            <div class="vehicle-header">
+                <div class="vehicle-title">2008 Toyota Corolla 1.8</div>
+                <div class="vehicle-year">2008</div>
+            </div>
+            
+            <div class="vehicle-stats">
+                <div class="vehicle-stat">
+                    <div class="value">$5,200</div>
+                    <div class="label">价格</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">118k</div>
+                    <div class="label">里程</div>
+                </div>
+                <div class="vehicle-stat">
+                    <div class="value">7</div>
+                    <div class="label">优先级</div>
+                </div>
+            </div>
+            
+            <div style="margin: 10px 0;">
+                <span class="status-badge status-reselling">🔄 已上架</span>
+                
+                
+            </div>
+            
+            <div class="action-buttons">
+                <a href="https://facebook.com/marketplace/item/8888888888888" target="_blank" class="btn btn-primary">🔗 查看链接</a>
+                <button class="btn btn-secondary" onclick="updateStatus('fb_8888888888888', 'next')">➡️ 推进</button>
+            </div>
+        </div>
+    
+            </div>
+        </div>
+    
+    </div>
+    
+    <script>
+        // 简单的交互功能
+        function updateStatus(vehicleId, newStatus) {
+            alert('车辆 ' + vehicleId + ' 状态更新为: ' + newStatus);
+            // 实际应用中这里会调用API
+        }
+    </script>
+</body>
+</html>
