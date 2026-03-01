@@ -37,8 +37,9 @@ class CarScoutRunner {
     try {
       const trademe = new TradeMeScraper();
       const trademeResults = await trademe.run();
-      this.allVehicles.push(...trademeResults.map(v => ({ ...v, source: 'TradeMe' })));
-      console.log(`✅ TradeMe: ${trademeResults.length} 辆`);
+      const normalized = this.normalizeScraperResults(trademeResults, 'TradeMe');
+      this.allVehicles.push(...normalized);
+      console.log(`✅ TradeMe: ${normalized.length} 辆`);
     } catch (err) {
       console.error('❌ TradeMe 失败:', err.message);
     }
@@ -50,8 +51,9 @@ class CarScoutRunner {
     try {
       const facebook = new FacebookScraper();
       const fbResults = await facebook.run();
-      this.allVehicles.push(...fbResults.map(v => ({ ...v, source: 'Facebook' })));
-      console.log(`✅ Facebook: ${fbResults.length} 辆`);
+      const normalized = this.normalizeScraperResults(fbResults, 'Facebook');
+      this.allVehicles.push(...normalized);
+      console.log(`✅ Facebook: ${normalized.length} 辆`);
     } catch (err) {
       console.error('❌ Facebook 失败:', err.message);
     }
@@ -63,8 +65,9 @@ class CarScoutRunner {
     try {
       const turners = new TurnersScraper();
       const turnersResults = await turners.run();
-      this.allVehicles.push(...turnersResults.map(v => ({ ...v, source: 'Turners' })));
-      console.log(`✅ Turners: ${turnersResults.length} 辆`);
+      const normalized = this.normalizeScraperResults(turnersResults, 'Turners');
+      this.allVehicles.push(...normalized);
+      console.log(`✅ Turners: ${normalized.length} 辆`);
     } catch (err) {
       console.error('❌ Turners 失败:', err.message);
     }
@@ -87,6 +90,19 @@ class CarScoutRunner {
     this.generateChineseReport(unique);
 
     return unique;
+  }
+
+  normalizeScraperResults(scraperOutput, sourceName) {
+    const vehicles = Array.isArray(scraperOutput)
+      ? scraperOutput
+      : scraperOutput?.vehicles;
+
+    if (!Array.isArray(vehicles)) {
+      console.warn(`⚠️ ${sourceName} 返回格式异常，已跳过该数据源。`);
+      return [];
+    }
+
+    return vehicles.map(vehicle => ({ ...vehicle, source: sourceName }));
   }
 
   deduplicate(vehicles) {
@@ -129,7 +145,7 @@ class CarScoutRunner {
     const today = new Date().toISOString().split('T')[0];
     
     // 按价格排序
-    const sorted = vehicles.sort((a, b) => a.price - b.price);
+    const sorted = [...vehicles].sort((a, b) => (a.price || 0) - (b.price || 0));
     
     let report = `# 🚗 Car Scout 每日车辆报告\n\n`;
     report += `**日期**: ${today}\n\n`;
