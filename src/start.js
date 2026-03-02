@@ -25,4 +25,7 @@ if (!fs.existsSync(vehiclesFile)) {
 
 // 现在启动服务器
 console.log('🚀 Starting Car Scout server...');
-require('./web-server.js');
+const CarScoutWebServer = require('./web-server.js');
+const port = process.env.PORT || process.argv[2] || 3000;
+const server = new CarScoutWebServer(port);
+server.start();
