@@ -1,0 +1,18 @@
+{
+  "name": "car-scout-toyota",
+  "version": "2.0.0",
+  "description": "Car Scout - Facebook Marketplace Toyota二手车抓取工具",
+  "main": "src/scraper.js",
+  "scripts": {
+    "scrape": "node src/scraper.js",
+    "score": "node src/scoring.js",
+    "report": "node src/report.js",
+    "full": "node src/scraper.js && node src/scoring.js && node src/report.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.11.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "sql.js": "^1.14.0"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "name": "car-scout",
+  "description": "Car Scout 倒卖专用 - 三平台扫描，以利润和周转为核心",
+  "version": "3.0.0",
+  "platforms": ["facebook", "trademe", "skykiwi"],
+
+  "schedule": {
+    "daily": {
+      "hour": 8,
+      "minute": 0,
+      "timezone": "Pacific/Auckland"
+    }
+  },
+
+  "search": {
+    "models": ["Corolla", "Vitz", "Wish", "RAV4", "Honda Fit", "Demio"],
+    "locations": ["auckland", "waikato"],
+    "priceMin": 2000,
+    "priceMax": 5000,
+    "yearMin": 2005,
+    "kmMax": 160000
+  },
+
+  "filters": {
+    "excludeKeywords": [
+      "engine problem", "engine issue", "transmission problem",
+      "gearbox issue", "blown head gasket", "overheating",
+      "engine knock", "oil leak", "coolant leak",
+      "not running", "doesn't start", "wont start", "won't start",
+      "engine blown", "gearbox blown", "water damage",
+      "written off", "totaled", "spares or repair",
+      "as is", "project car", "for parts", "wrecking",
+      "head gasket", "timing chain", "cambelt due", "timing belt due",
+      "needs engine", "needs gearbox", "needs transmission",
+      "smoke", "smoking", "knocking", "rattling",
+      "flood damage", "fire damage", "salvage",
+      "发动机问题", "变速箱问题", "漏油", "漏水", "过热",
+      "无法启动", "事故车", "泡水车", "报废"
+    ],
+    "highCostSignals": [
+      "needs new tyres", "tyres need replacing",
+      "battery flat", "new battery needed",
+      "ac not working", "air con broken", "no ac",
+      "dent", "panel damage", "body damage",
+      "rust", "rusty", "底盘生锈",
+      "no wof", "no warrant", "wof expired",
+      "no rego", "rego expired"
+    ],
+    "urgentSellerSignals": [
+      "moving overseas", "leaving nz", "leaving country",
+      "need gone", "must sell", "urgent sale", "urgent",
+      "price drop", "reduced", "negotiable", "make an offer",
+      "open to offers", "or near offer", "ono",
+      "出国甩卖", "急转", "急售", "便宜卖"
+    ],
+    "skykiwiMaxAgeDays": 30,
+    "sellerType": "private",
+    "excludeListings": [
+      "1282302423822798",
+      "25954925787521200",
+      "1958985288341311",
+      "1937548966861939",
+      "3372503292918470",
+      "33290180997295286",
+      "815689881552977",
+      "1584964309474865",
+      "895277649878970"
+    ]
+  },
+
+  "flipScoring": {
+    "profitMargin": 35,
+    "turnoverSpeed": 30,
+    "prepCost": 15,
+    "negotiationPotential": 20
+  },
+
+  "marketPrices": {
+    "Corolla":   { "2005": 4500, "2008": 5200, "2010": 6000, "2012": 7000, "2015": 8500 },
+    "Vitz":      { "2005": 4000, "2008": 4800, "2010": 5500, "2012": 6500, "2015": 7500 },
+    "Wish":      { "2005": 4200, "2008": 5000, "2010": 5800, "2012": 6800, "2015": 8000 },
+    "RAV4":      { "2005": 5500, "2008": 6500, "2010": 7500, "2012": 9000, "2015": 12000 },
+    "Honda Fit": { "2006": 4000, "2008": 4800, "2010": 5500, "2012": 6500, "2015": 7500 },
+    "Demio":     { "2006": 3800, "2008": 4500, "2010": 5200, "2012": 6000, "2015": 7000 }
+  },
+
+  "turnoverGrades": {
+    "A": {
+      "models": ["Corolla", "Vitz", "Honda Fit"],
+      "location": "auckland",
+      "days": "7-14",
+      "description": "最快出手，高需求"
+    },
+    "B": {
+      "models": ["Corolla", "Vitz", "Honda Fit"],
+      "location": "waikato",
+      "days": "14-21",
+      "description": "较快出手"
+    },
+    "C": {
+      "models": ["RAV4", "Demio", "Wish"],
+      "location": "auckland",
+      "days": "14-21",
+      "description": "中等速度"
+    },
+    "D": {
+      "models": ["RAV4", "Demio", "Wish"],
+      "location": "waikato",
+      "days": "21-30",
+      "description": "较慢，需要耐心"
+    }
+  },
+
+  "prepCostEstimates": {
+    "wofValid6m": 0,
+    "wofValid3m": 150,
+    "wofExpiringSoon": 400,
+    "noWof": 700,
+    "cleanAndDetail": 150,
+    "minorRepairs": 300
+  },
+
+  "flipGrades": {
+    "S": { "min": 80, "label": "立即行动", "description": "先打电话再看车" },
+    "A": { "min": 65, "label": "值得看车", "description": "准备议价策略" },
+    "B": { "min": 50, "label": "谨慎考虑", "description": "必须砍到目标价" },
+    "C": { "min": 0,  "label": "不建议",   "description": "除非有特殊信息" }
+  },
+
+  "notifications": {
+    "immediate": {
+      "flipScoreThreshold": 80,
+      "auctionEndingHours": 1
+    },
+    "dailySummary": {
+      "enabled": true,
+      "time": "08:30"
+    }
+  },
+
+  "output": {
+    "dataDir": "./data/daily",
+    "reportDir": "./reports",
+    "format": ["json", "markdown"]
+  }
+}

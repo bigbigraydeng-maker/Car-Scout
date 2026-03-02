@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Data files (generated)
+data/*.json
+data/*.csv
+!data/.gitkeep
+
+# Reports (generated)
+reports/*.md
+reports/*.html
+!reports/.gitkeep
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Chrome extension temp files
+chrome-ext/
+
+# Problematic files
+nul
