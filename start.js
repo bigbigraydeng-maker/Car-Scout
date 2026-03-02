@@ -14,7 +14,7 @@ const possiblePaths = [
 ];
 
 function ensureDatabase() {
-  const rootDir = process.cwd();
+  const rootDir = __dirname;
   const dbDir = path.join(rootDir, 'database');
   const vehiclesFile = path.join(dbDir, 'vehicles.json');
 
