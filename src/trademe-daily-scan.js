@@ -77,8 +77,8 @@ async function scanBrand(page, brandConfig) {
     const listings = await page.evaluate((brand) => {
       const results = [];
       
-      // TradeMe 列表卡片选择器
-      const cards = document.querySelectorAll('[class*="ListingCard"], [class*="tm-search-card"], .tm-motors-search-card');
+      // TradeMe 列表卡片选择器 - 适配多品牌页面结构
+      const cards = document.querySelectorAll('[class*="ListingCard"], [class*="tm-search-card"], .tm-motors-search-card, .o-card, [data-testid*="listing"]');
       
       cards.forEach(card => {
         try {
@@ -93,11 +93,20 @@ async function scanBrand(page, brandConfig) {
           const titleEl = card.querySelector('h3, [class*="title"], h2');
           const title = titleEl ? titleEl.textContent.trim() : '';
           
-          // 提取价格
-          const priceEl = card.querySelector('[class*="price"], [class*="Price"]');
-          const priceText = priceEl ? priceEl.textContent.trim() : '';
-          const priceMatch = priceText.match(/\$([\d,]+)/);
-          const price = priceMatch ? parseInt(priceMatch[1].replace(/,/g, '')) : null;
+          // 提取价格 - 多选择器适配
+          let price = null;
+          const priceSelectors = ['[class*="price"]', '[class*="Price"]', '.o-price', '[data-testid*="price"]'];
+          for (const sel of priceSelectors) {
+            const priceEl = card.querySelector(sel);
+            if (priceEl) {
+              const priceText = priceEl.textContent.trim();
+              const priceMatch = priceText.match(/\$([\d,]+)/);
+              if (priceMatch) {
+                price = parseInt(priceMatch[1].replace(/,/g, ''));
+                break;
+              }
+            }
+          }
           
           // 提取详情（年份、里程等）
           const detailsEl = card.querySelector('[class*="details"], [class*="subtitle"]');
@@ -107,9 +116,13 @@ async function scanBrand(page, brandConfig) {
           const yearMatch = title.match(/\b(20\d{2}|19\d{2})\b/) || details.match(/\b(20\d{2}|19\d{2})\b/);
           const year = yearMatch ? parseInt(yearMatch[1]) : null;
           
-          // 提取里程
-          const kmMatch = details.match(/(\d+)\s*km/i) || title.match(/(\d+)\s*km/i);
-          const km = kmMatch ? parseInt(kmMatch[1].replace(/,/g, '')) : null;
+          // 提取里程 - 从标题和详情中提取
+          let km = null;
+          const combinedText = title + ' ' + details;
+          const kmMatch = combinedText.match(/(\d{1,3}(?:,\d{3})*)\s*km/i);
+          if (kmMatch) {
+            km = parseInt(kmMatch[1].replace(/,/g, ''));
+          }
           
           // 提取位置
           const locationEl = card.querySelector('[class*="location"]');
@@ -184,14 +197,14 @@ async function sendFeishuNotification(newListings) {
   let message = `🚗 **TradeMe 每日新车报告** | ${new Date().toLocaleDateString('zh-CN')}\n\n`;
   message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
   
-  // 只推送前5辆最好的
+  // 只推送前8辆最好的
   const topListings = newListings
     .map(l => ({ ...l, flipScore: calculateFlipScore(l) }))
     .sort((a, b) => b.flipScore - a.flipScore)
-    .slice(0, 5);
+    .slice(0, 8);
   
   topListings.forEach((l, i) => {
-    const medal = ['🏆', '🥈', '🥉', '4️⃣', '5️⃣'][i] || '•';
+    const medal = ['🏆', '🥈', '🥉', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣'][i] || '•';
     message += `${medal} **${l.year || ''} ${l.title}**\n`;
     message += `💰 $${l.price?.toLocaleString() || '?'}`;
     if (l.km) message += ` | ${(l.km/1000).toFixed(0)}k km`;
@@ -200,7 +213,7 @@ async function sendFeishuNotification(newListings) {
   });
   
   message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-  message += `📊 今日新增: ${newListings.length} 辆 | 推送前5辆最佳机会`;
+  message += `📊 今日新增: ${newListings.length} 辆 | 推送前8辆最佳机会`;
   
   try {
     await sendFeishu(message);
