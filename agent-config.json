@@ -1,0 +1,18 @@
+{
+  "skills": {
+    "content-repository": {
+      "path": "C:\\Users\\Zhong\\.openclaw\\workspace\\skills\\content-repository",
+      "enabled": true
+    },
+    "content-rewriter": {
+      "path": "C:\\Users\\Zhong\\.openclaw\\workspace\\skills\\content-rewriter",
+      "enabled": true
+    },
+    "car-scout": {
+      "path": "C:\\Users\\Zhong\\.openclaw\\workspace\\skills\\car-scout",
+      "enabled": true
+    }
+  },
+  "version": "1.0.0",
+  "updatedAt": "2026-03-03"
+}
