@@ -138,6 +138,17 @@
     }
   },
 
+  "dataRetention": {
+    "minFlipScore": 50,
+    "maxAgeDays": 7,
+    "keepFollowing": true,
+    "cleanupEnabled": true
+  },
+  "scanSchedule": {
+    "T0": { "models": ["Corolla", "Vitz", "Honda Fit"], "intervalMinutes": 30, "description": "高周转车型" },
+    "T1": { "models": ["RAV4", "Swift", "Demio"], "intervalMinutes": 60, "description": "中高利润车型" },
+    "T2": { "models": ["Wish", "Prius", "Aqua"], "intervalMinutes": 120, "description": "补充车型" }
+  },
   "output": {
     "dataDir": "./data/daily",
     "reportDir": "./reports",
