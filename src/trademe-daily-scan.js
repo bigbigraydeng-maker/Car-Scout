@@ -197,11 +197,26 @@ async function sendFeishuNotification(newListings) {
   let message = `🚗 **TradeMe 每日新车报告** | ${new Date().toLocaleDateString('zh-CN')}\n\n`;
   message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
   
-  // 只推送前8辆最好的
-  const topListings = newListings
+  // 先选择前10辆最好的准备检查
+  let topListings = newListings
     .map(l => ({ ...l, flipScore: calculateFlipScore(l) }))
     .sort((a, b) => b.flipScore - a.flipScore)
-    .slice(0, 8);
+    .slice(0, 10);
+  
+  // 检查链接有效性
+  console.log(`\n🔍 正在检查 ${topListings.length} 辆车是否仍在售...`);
+  const { checkListingsStatus } = require('./check-listing-status');
+  const statusResults = await checkListingsStatus(topListings, 10);
+  
+  // 只保留在售的车辆（最多8辆）
+  topListings = statusResults.available.slice(0, 8);
+  
+  if (topListings.length === 0) {
+    console.log('❌ 所有车辆都已售或不可用，不发送通知');
+    return;
+  }
+  
+  console.log(`✅ ${topListings.length} 辆车确认在售，发送通知`);
   
   topListings.forEach((l, i) => {
     const medal = ['🏆', '🥈', '🥉', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣'][i] || '•';
