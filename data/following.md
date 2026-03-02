@@ -14,5 +14,12 @@
   - 原因: 高利润潜力 $6,633，已挂牌29天（议价空间大）
   - 备注: TradeMe listing，昨日数据里已出现过
 
+### 2026-03-03 添加
+- [ ] **2008 Toyota Avensis** | $4,000 | FB
+  - 链接: https://www.facebook.com/marketplace/item/2146553189492094
+  - 原因: 11小时前发布，WOF到9月
+  - 里程: 127,800km
+  - 位置: Epsom, Auckland
+
 ## 历史跟进 (已处理)
 *(空)*
